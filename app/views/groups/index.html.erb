@@ -1,0 +1,35 @@
+<h1>Welcome, <%= @user.first_name %></h1>
+<div class='row'>
+
+	<div class='col'>
+		<% @all_groups.each do |group| %>
+			<p><a href='/groups/<%= group.id %>'><h4><%= group.title %></h4></a></p>
+			<p>Members: <%= group.attendees.count %></p>
+			<p><%= group.description %></p>
+			<% if group.user_id == @user.id %>
+				<form action='/groups/<%= group.id %>' method='post'>
+		  			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+		  			<input type="hidden" name="_method" value="delete">
+		  			<button type='submit'>delete</button>
+		      	</form>
+			<% end %>
+		<% end %>
+	</div>
+
+	<div class='col border border-dark border-radius'>
+		<h2>Add Group</h2>
+		<form action='/groups' method='post'>
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+			<input type='hidden' name='group[user_id]' value="<%= session[:user_id] %>">
+			<div class='form-group'>
+				<label for='title'>title:</label>
+				<input type='text' id='title' name='group[title]'>
+			</div>
+			<div class='form-group'>
+				<label for='description'>description:</label>
+				<textarea type='description' id='description' class='form-control' name='group[description]'></textarea>
+			</div>
+			<button type='submit'>Add Group</button>
+		</form>
+	</div>
+</div>

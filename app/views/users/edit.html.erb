@@ -1,0 +1,16 @@
+<h1>Edit your profile</h1>
+<form action='/users/<%= session[:user_id] %>' method='post'>
+	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+	<input type='hidden' name='_method' value='patch'>
+	<label for='first_name'>first name:</label>
+	<input type='text' id='first_name' name='user[first_name]'>
+	<label for='last_name'>last name:</label>
+	<input type='text' id='last_name' name='user[last_name]'>
+	<label for='city'>city:</label>
+	<input type='text' id='city' name='user[city]'>
+	<label for='state'>state:</label>
+	<input type='text' id='state' name='user[state]'>
+	<label for='email'>Email:</label>
+	<input type='text' id='email' name='user[email]'>
+	<button type='submit'>submit</button>
+</form>

@@ -1,0 +1,54 @@
+<h1>Welcome, <%= @user.first_name %></h1>
+<h2>Here are some events in your state</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Date</th>
+      <th scope="col">Location</th>
+      <th scope="col">Host</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  	<% @events_in_state.each do |event| %>
+    <tr>
+      <td scope='row'><%= event.title %></td>
+      <td><%= event.event_date %></td>
+      <td><%= event.city %></td>
+      <td><%= event.first_name %></td>
+      <td>
+      <% unless @attended_events.exists? event.id %>
+      <%= @attended_events %> <%= @events_in_state.ids %>
+      <!--if the user has not attended the event -->
+		<form action='/attendance' method='post'>
+      		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      		<input type='hidden' name='attendance[user_id]' value="<%= session[:user_id] %>">
+      		<input type='hidden' name='attendance[event_id]' value="<%= event.id %>">
+      		<button type='submit'>Join</button>
+      	</form>
+      	<% else %>
+     	 <form action='/attendance/<%= @joined_in_state_events.id %>' method='post'>
+  			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  			<button type='submit'>leave</button>
+      	</form>
+    	<% end %>
+    </td>
+	</tr>
+  	<% end %>
+ </tbody>
+</table>
+<h2>add Event</h2>
+<form action='/events' method='post'>
+	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+	<input type='hidden' name='event[user_id]' value="<%= session[:user_id] %>">
+	<label for='title'>title:</label>
+	<input type='text' id='title' name='event[title]'>
+	<label for='date'>date:</label>
+	<input type='date' id='date' name='event[event_date]'>
+	<label for='city'>city:</label>
+	<input type='text' id='city' name='event[city]'>
+	<label for='state'>state:</label>
+	<input type='text' id='state' name='event[state]'>
+	<button type='submit'>Add Event</button>
+</form>

@@ -1,0 +1,23 @@
+<h1><%= @group.title %></h1>
+<p><%= @group.description %></p>
+<% if @group.attendees.include?(@user) %>
+	<form action='/attendance/<%= @group.attendances.find_by(user_id: @user.id).id %>' method='post'>
+		<input type="hidden" name="_method" value="delete">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  		<button type='submit'>Leave</button>
+	</form>
+<% else %>
+	<form action='/attendance' method='post'>
+		<input type="hidden" name="attendance[user_id]" value="<%= session[:user_id] %>">
+		<input type="hidden" name="attendance[group_id]" value="<%= @group.id %>">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  		<button type='submit'>Join</button>
+	</form>
+<% end %>
+
+
+<h3>Created By: <%= @group.first_name %></h3>
+<p><strong>Attendees:</strong></p>
+<% @group.attendees.each do |attendee| %>
+	<p><%= attendee.first_name %> <%= attendee.last_name %></p>
+<% end %>
